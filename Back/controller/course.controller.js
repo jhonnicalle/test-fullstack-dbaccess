@@ -29,13 +29,21 @@ const getCourseById = async (req,res) => {
 // GET INSTRUCTORS THAT THERE ARE NOT IN THE COURSE
 const getNoInstructorsInCourse = async (req,res) => {
   const {idCourse} = req.params;
-  const instructorListNoInCourse = await sequelize.query(`SELECT id, ci, name from instructors where id NOT IN (SELECT A.id from courses as A, instructor_course as B WHERE A.id = B.id_course AND A.id = ${idCourse})`);
-  // if(!instructorListNoInCourse) {
-  //   return res.status(500).json({success: false, message: "There is no course"})
-  // }
+  const instructorListNoInCourse = await sequelize.query(`SELECT * from instructors where id NOT IN (SELECT B.id_instructor from courses as A, instructor_course as B WHERE A.id = B.id_course AND A.id = ${idCourse})`);
   res.send(instructorListNoInCourse[0])
 }
 
+// GET INSTRUCTORS THAT THERE ARE IN THE COURSE
+const getInstructorsInCourse = async (req,res) => {
+  const {idCourse} = req.params;
+  const instructorListInCourse = await sequelize.query(`SELECT  B.* FROM instructors as B LEFT JOIN instructor_course as A ON B.id = A.id_instructor WHERE A.id_course = ${idCourse}`);
+  // if(!instructorListNoInCourse) {
+  //   return res.status(500).json({success: false, message: "There is no course"})
+  // }
+  res.send(instructorListInCourse[0])
+}
+
+// ADD INSTRUCTOR TO COURSE
 const setInstructorInCourse = async (req,res) => {
   const {idCourse, idInstructor} = req.body;
   try {
@@ -90,8 +98,24 @@ const deleteCourse = async (req,res) => {
   } catch (error) {
     return res.status(404).json({success: false, message: "Something went wrong!", error})
   }
-  
 }
 
 
-module.exports = {createCourse, getAllCourses, getCourseById, deleteCourse, getNoInstructorsInCourse, setInstructorInCourse}
+// DELETE A INSTRUCTOR FROM COURSE
+const deleteIntructorCourse = async (req,res) => {
+  try {
+    const {idCourse, idInstructor} = req.body;
+    const deleteRowCount = await sequelize.query(`DELETE FROM instructor_course WHERE id_course = ${idCourse} AND id_instructor = ${idInstructor}`);
+
+    if(!deleteRowCount) { 
+      return res.status(400).json({success: false, message: "There is no register"})
+    }
+
+    res.status(200).json({success: true, message: "Instructor deleted", count: deleteRowCount})
+  } catch (error) {
+    return res.status(404).json({success: false, message: "Something went wrong!", error})
+  }
+}
+
+
+module.exports = {createCourse, getAllCourses, getCourseById, deleteCourse, getNoInstructorsInCourse, setInstructorInCourse, getInstructorsInCourse, deleteIntructorCourse}
