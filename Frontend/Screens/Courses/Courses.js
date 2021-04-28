@@ -1,5 +1,5 @@
 import React, { useState , useEffect} from 'react'
-import { Container, Content, Button, Text, Left, Icon, Body, Title, Right, Card, CardItem } from 'native-base';
+import { Container, Button, Text, Icon, Body, Card, CardItem, Toast } from 'native-base';
 import { Dimensions, View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import API from '../../assets/common/API';
 import { useIsFocused } from '@react-navigation/native';
@@ -12,22 +12,36 @@ const Courses = ({  navigation }) => {
   
   const [courses, setCourses] = useState([])
 
-  useEffect(() => {
+  const deleteCourse = (id) => {
+    API.delete(`course/${id}`)
+    .then(res => {
+      Toast.show({
+        text: "Deleted successfully!",
+        buttonText: "X",
+        duration: 3000
+      });
+      getCourses()
+    })
+    .catch(err => console.log(err))
+  }
+
+  const getCourses = () => {
     API.get('course/')
     .then(res => {
       setCourses(res.data)
     })
     .catch(err => console.log(err))
-    // return () => {
-    //   setCourses([])
-    // }
+  }
+
+  useEffect(() => {
+    getCourses()
   }, [isFocused])
 
   return(
     <SafeAreaView>
       <ScrollView>
         <Container>
-          <Text style={[styles.center, {margin: 10, textAlign: 'center'}]}>Courses</Text>
+          <Text style={{margin: 10, textAlign: 'center'}}>Courses</Text>
           {courses.length > 0 ? 
             (
               <>
@@ -39,8 +53,10 @@ const Courses = ({  navigation }) => {
                         {item.name}
                       </Text>
                     </Body>
+                    <Icon name='delete' type='AntDesign' style={{fontSize: 20, color: 'red'}} onPress={() => deleteCourse(item.id)}/>
                     <Icon name='eye' onPress={() => navigation.navigate('Course Details', {idCourse: item.id, nameCourse: item.name})}/>
                   </CardItem>
+                  
                 </Card>
               ))}
               </>

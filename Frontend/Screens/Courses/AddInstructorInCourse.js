@@ -62,7 +62,9 @@ const AddInstructorInCourse = ({ route, navigation}) => {
       <ScrollView>
     
         <Container>
+          <Text style={[styles.center, {margin: 10, textAlign: 'center'}]}>Add instructor</Text>
           <Content>
+            
             {instructors.map(item => (
               <Card key={item.id} style={styles.card}>
                 <CardItem>

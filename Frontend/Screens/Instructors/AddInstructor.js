@@ -33,6 +33,7 @@ const AddInstructor = ({navigation}) => {
 
   return (
     <Container>
+      <Text style={[styles.center, {margin: 10, textAlign: 'center'}]}>Add instructor</Text>
       <Content>
         <Form>
           <Controller

@@ -32,6 +32,7 @@ const AddCourse = ({ navigation }) => {
 
   return (
     <Container>
+      <Text style={{margin: 10, textAlign: 'center'}}>Add course</Text>
       <Content>
         <Form>
           <Controller

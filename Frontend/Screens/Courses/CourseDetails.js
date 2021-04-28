@@ -48,8 +48,8 @@ const CourseDetails = ({ route, navigation }) => {
     <SafeAreaView>
       <ScrollView>
         <Container>
-          
-          <Text>{nameCourse}</Text>
+          <Text style={[styles.center, {margin: 10, textAlign: 'center'}]}>{nameCourse}</Text>
+          <Text style={{margin: 10}}>List of instructors</Text>
 
           {instructors.length > 0 ? (
             <>
