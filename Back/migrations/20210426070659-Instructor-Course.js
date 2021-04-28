@@ -39,6 +39,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('InstructorCourse');
+    await queryInterface.dropTable('instructor_course');
   }
 };

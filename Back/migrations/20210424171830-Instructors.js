@@ -22,7 +22,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      year_expecience: {
+      year_experience: {
         allowNull: false,
         type: Sequelize.STRING
       },

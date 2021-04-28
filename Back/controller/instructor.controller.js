@@ -6,7 +6,7 @@ const createInstructor = async (req,res) => {
       name: req.body.name,
       ci: req.body.ci,
       speciality: req.body.speciality,
-      year_expecience: req.body.yearExperience
+      year_experience: req.body.yearExperience
     });
 
     if(newInstructor) {

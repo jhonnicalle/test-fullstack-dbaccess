@@ -15,7 +15,7 @@ const Instructor = db.define('instructors', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  year_expecience: {
+  year_experience: {
     type: Sequelize.STRING,
     allowNull: false
   }
