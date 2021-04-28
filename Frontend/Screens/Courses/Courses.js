@@ -1,13 +1,14 @@
 import React, { useState , useEffect} from 'react'
 import { Container, Content, Button, Text, Left, Icon, Body, Title, Right, Card, CardItem } from 'native-base';
-import { Dimensions, View, StyleSheet } from 'react-native';
+import { Dimensions, View, StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import API from '../../assets/common/API';
+import { useIsFocused } from '@react-navigation/native';
 
 let { height } = Dimensions.get('window')
 
 const Courses = ({  navigation }) => {
 
-  
+  const isFocused = useIsFocused();
   
   const [courses, setCourses] = useState([])
 
@@ -20,36 +21,41 @@ const Courses = ({  navigation }) => {
     // return () => {
     //   setCourses([])
     // }
-  }, [])
+  }, [isFocused])
 
   return(
-    <Container>
-      {courses.length > 0 ? 
-        (
-          <>
-          {courses.map((item) => (
-            
-              <Card key={`${item.id}_${item.name}`} >
-                <CardItem>
-                  <Body>
-                    <Text onPress={() => navigation.navigate('Course Details', {idCourse: item.id, nameCourse: item.name})}>
-                      {item.name}
-                    </Text>
-                    
-                  </Body>
-                </CardItem>
-              </Card>
-          ))}
-          </>
-        ): (
-          <View style={[styles.center, {height: height / 2}]}>
-            <Text>No products found</Text>
-          </View>
-        )
-      
-        
-      }
-    </Container>
+    <SafeAreaView>
+      <ScrollView>
+        <Container>
+          <Text style={[styles.center, {margin: 10, textAlign: 'center'}]}>Courses</Text>
+          {courses.length > 0 ? 
+            (
+              <>
+              {courses.map((item) => (
+                <Card key={`${item.id}_${item.name}`} >
+                  <CardItem>
+                    <Body>
+                      <Text >
+                        {item.name}
+                      </Text>
+                    </Body>
+                    <Icon name='eye' onPress={() => navigation.navigate('Course Details', {idCourse: item.id, nameCourse: item.name})}/>
+                  </CardItem>
+                </Card>
+              ))}
+              </>
+            ): (
+              <View style={[styles.center, {height: height / 2}]}>
+                <Text>No products found</Text>
+              </View>
+            )
+          } 
+        </Container>
+      </ScrollView>
+      <Button rounded style={styles.buttonAdd} onPress={() => navigation.navigate('Add Course')}>
+        <Icon name='add' />
+      </Button>
+    </SafeAreaView>
   )
 }
 
@@ -66,6 +72,16 @@ const styles = StyleSheet.create({
   //   flexWrap: "wrap",
   //   backgroundColor: "gainsboro",
   // },
+  buttonAdd: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom:10,
+    right: 10,
+    width: 60,
+    height: 60
+  },
   center: {
     justifyContent: 'center',
     alignItems: 'center'

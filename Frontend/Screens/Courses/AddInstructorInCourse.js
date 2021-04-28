@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { Container, Header, Content, Form, Item, Input, Label, Icon, Text, Card, Body, CardItem, Button, Picker, Select } from 'native-base';
-import { Dimensions, StyleSheet, View , SafeAreaView, ScrollView} from 'react-native';
-import { useForm, Controller } from "react-hook-form";
+import { Container, Content,Toast, Icon, Text, Card, Body, CardItem, Button } from 'native-base';
+import { Dimensions, StyleSheet , SafeAreaView, ScrollView} from 'react-native';
+// import { useForm, Controller } from "react-hook-form";
 import API from '../../assets/common/API';
 
 let {height, width} = Dimensions.get('window')
@@ -18,11 +18,28 @@ const AddInstructorInCourse = ({ route, navigation}) => {
       idInstructor: idInstructor,
       idCourse: idCourse
     }
+
     API.post('course/registerInstructor', data)
     .then(res => {
+      
       navigation.goBack();
+      
+      Toast.show({
+        text: "Registered successfully!",
+        buttonText: "X",
+        type: "success",
+        duration: 3000
+      });
+    
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      Toast.show({
+        text: "An error has ocurred.",
+        buttonText: "X",
+        type: "danger",
+        duration: 3000
+      });
+    })
   }
    
   
@@ -41,39 +58,35 @@ const AddInstructorInCourse = ({ route, navigation}) => {
   }, [])
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+    <SafeAreaView>
+      <ScrollView>
     
         <Container>
           <Content>
-          
-              {instructors.map(item => (
-                <Card key={item.id} style={styles.card}>
-                  <CardItem>
-                    <Body>
-                      <Text>
-                          Name: {item.name}
-                      </Text>
-                      <Text>
-                          Speciality: {item.speciality}
-                      </Text>
-                      <Text>
-                          Years Exp: {item.year_expecience}
-                      </Text>
-                    </Body>
-                    <Button rounded style={styles.buttonAdd} onPress={() => addInstructor(item.id)}>
-                      <Icon name='add' />
-                    </Button>
-                  </CardItem>
-                </Card>
-              ))}
-            
+            {instructors.map(item => (
+              <Card key={item.id} style={styles.card}>
+                <CardItem>
+                  <Body>
+                    <Text>
+                        Name: {item.name}
+                    </Text>
+                    <Text>
+                        Speciality: {item.speciality}
+                    </Text>
+                    <Text>
+                        Years Exp: {item.year_experience}
+                    </Text>
+                  </Body>
+                  <Button rounded style={styles.button} onPress={() => addInstructor(item.id)}>
+                    <Icon name='add' />
+                  </Button>
+                </CardItem>
+              </Card>
+            ))}
           </Content>
         </Container>
       </ScrollView>
     </SafeAreaView>
-
-   
   )
 }
 
@@ -87,12 +100,14 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   button: {
-    // display: 'flex',
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    textAlign: 'center',
-    width: width,
-    marginTop: 35
+    position: 'absolute',
+    right:15,
+    top: 20,
+    width: 50,
+    height: 50
   }
 })
 

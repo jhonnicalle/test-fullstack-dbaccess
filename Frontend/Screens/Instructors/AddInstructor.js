@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Content, Form, Item, Input, Label, Icon, Text, Button } from 'native-base';
+import { Container, Content, Form, Item, Input, Label, Icon, Text, Button, Toast } from 'native-base';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
 import API from '../../assets/common/API';
@@ -10,13 +10,24 @@ const AddInstructor = ({navigation}) => {
 
   const { control, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = data => {
-    // console.log(data)
     API.post('instructor/', data)
     .then(res => {
-      // console.log(res.data);
-      navigation.navigate('Instructors');
+      navigation.goBack();
+      Toast.show({
+        text: "Registered Successfully!",
+        buttonText: "X",
+        type: "success",
+        duration: 3000
+      });
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      Toast.show({
+        text: "CI exist in the system!",
+        buttonText: "X",
+        type: "danger",
+        duration: 3000
+      });
+    })
   };
 
 

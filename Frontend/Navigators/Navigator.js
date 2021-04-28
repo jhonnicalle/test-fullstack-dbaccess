@@ -7,6 +7,7 @@ import AddInstructorInCourse from "../Screens/Courses/AddInstructorInCourse";
 import Instructors from "../Screens/Instructors/";
 import Home from '../Screens/Home';;
 import AddInstructor from "../Screens/Instructors/AddInstructor";
+import AddCourse from '../Screens/Courses/AddCourse';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +18,6 @@ function MyStack () {
         name='Home'
         component={Home}
         options={{
-
           headerShown: false
         }}
       />
@@ -39,6 +39,14 @@ function MyStack () {
       <Stack.Screen 
         name='Add Instructor'
         component={AddInstructor}
+        options={{
+
+          headerShown: false
+        }}
+      />
+      <Stack.Screen 
+        name='Add Course'
+        component={AddCourse}
         options={{
 
           headerShown: false
